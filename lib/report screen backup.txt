@@ -1,0 +1,142 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class ReportIncidentScreen extends StatefulWidget {
+  const ReportIncidentScreen({super.key});
+
+  @override
+  State<ReportIncidentScreen> createState() => _ReportIncidentScreenState();
+}
+
+class _ReportIncidentScreenState extends State<ReportIncidentScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  File? _mediaFile;
+
+  Future<void> _pickMedia(ImageSource source, {bool isVideo = false}) async {
+    final picker = ImagePicker();
+    final pickedFile = isVideo
+        ? await picker.pickVideo(source: source)
+        : await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _mediaFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  Future<void> _submitReport() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    String? mediaUrl;
+
+    try {
+      // ✅ Upload media if exists
+      if (_mediaFile != null) {
+        final File mediaFile = _mediaFile!; // promote to non-nullable
+        final fileName =
+            '${DateTime.now().millisecondsSinceEpoch}_${mediaFile.path.split('/').last}';
+        final ref = FirebaseStorage.instance.ref().child('reports/$fileName');
+
+        final uploadTask = await ref.putFile(mediaFile);
+        mediaUrl = await uploadTask.ref.getDownloadURL();
+      }
+
+      // ✅ Save report to Firestore
+      await FirebaseFirestore.instance.collection('reports').add({
+        'title': _titleController.text.trim(),
+        'description': _descriptionController.text.trim(),
+        'mediaUrl': mediaUrl,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Report submitted successfully!')),
+        );
+      }
+
+      _formKey.currentState!.reset();
+      setState(() => _mediaFile = null);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to save report: $e')),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Report Incident')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+                validator: (value) =>
+                value == null || value.isEmpty ? 'Enter a title' : null,
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+                maxLines: 4,
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Enter a description'
+                    : null,
+              ),
+              const SizedBox(height: 16),
+              if (_mediaFile != null)
+                Column(
+                  children: [
+                    _mediaFile!.path.endsWith('.mp4')
+                        ? const Icon(Icons.videocam, size: 100)
+                        : Image.file(_mediaFile!, height: 200),
+                    TextButton(
+                      onPressed: () => setState(() => _mediaFile = null),
+                      child: const Text('Remove Media'),
+                    ),
+                  ],
+                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.camera_alt),
+                    onPressed: () => _pickMedia(ImageSource.camera),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.image),
+                    onPressed: () => _pickMedia(ImageSource.gallery),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.videocam),
+                    onPressed: () =>
+                        _pickMedia(ImageSource.camera, isVideo: true),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _submitReport,
+                child: const Text('Submit Report'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

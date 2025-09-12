@@ -1,0 +1,69 @@
+name: smart_civic_watch
+description: "Smart Civic Watch - A community safety and emergency reporting Flutter app."
+publish_to: 'none'
+
+environment:
+  sdk: '^3.8.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI & Assets
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.9
+  cached_network_image: ^3.3.1
+
+  # Firebase & Google
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.17.4
+  cloud_firestore: ^4.15.4
+  firebase_storage: ^11.7.4
+  firebase_messaging: ^14.7.9
+  google_sign_in: ^6.2.1
+  google_maps_flutter: ^2.5.3
+
+  # Map & Location
+  flutter_map: ^4.0.0
+  latlong2: ^0.8.1
+  geolocator: ^10.1.0
+
+  # State Management
+  provider: ^6.1.2
+  flutter_bloc: ^8.1.5
+  equatable: ^2.0.5
+
+  # Utilities
+  shared_preferences: ^2.2.2
+  permission_handler: ^11.3.1
+  url_launcher: ^6.2.6
+  image_picker: ^0.8.7+5
+  video_player: ^2.5.0
+  intl: ^0.20.2  # Updated to match flutter_localizations requirement
+
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/svgs/
+    - assets/translations/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter_24pt-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter_24pt-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter_24pt-SemiBold.ttf
+          weight: 600
