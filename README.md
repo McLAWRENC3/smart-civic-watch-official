@@ -11,7 +11,7 @@
 ----------------------------------------------------------
 **Step-by-Step Setup Instructions**
 1. Clone the Repository
-   git clone https://github.com/your-username/smart-civic-watch.git
+   git clone https://github.com/mclawrenc3/smart-civic-watch-official.git
    cd smart-civic-watch
    
 2. Install Dependencies
@@ -31,10 +31,10 @@ google-services.json for Android (place in android/app/)
 GoogleService-Info.plist for iOS (place in ios/Runner/)
 
 4. Run the Application
-   # For Android
+   -For Android
     flutter run -d android
     
-    # For iOS
+    - For iOS
     flutter run -d ios
 ---------------------------------------------------------------
 **Demo Accounts for Testing**
