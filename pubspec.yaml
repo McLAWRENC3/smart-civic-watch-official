@@ -26,7 +26,8 @@ dependencies:
   # Map & Location
   flutter_map: ^4.0.0
   latlong2: ^0.8.1
-  geolocator: ^10.1.0
+  geolocator: ^12.0.0  # <-- UPDATED
+  geocoding: ^3.0.0     # <-- ADDED
 
   # State Management
   provider: ^6.1.2
@@ -39,7 +40,8 @@ dependencies:
   url_launcher: ^6.2.6
   image_picker: ^0.8.7+5
   video_player: ^2.5.0
-  intl: ^0.20.2  # Updated to match flutter_localizations requirement
+  intl: ^0.20.2
+  share_plus: ^7.0.0   # <-- ADDED
 
   # Localization
   flutter_localizations:

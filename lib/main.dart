@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/home_screen.dart';
-import 'screens/report_incident_screen.dart';
+import 'screens/report_incident_screen.dart' as incident;
 import 'screens/emergency_contacts_screen.dart';
-import 'screens/EmergencyAlertsScreen.dart';
+import 'screens/EmergencyAlertsScreen.dart' as alerts;
 import 'screens/map_screen.dart';
 import 'screens/donations_screen.dart';
 import 'services/auth_service.dart';
@@ -94,9 +94,9 @@ class SmartCivicWatchApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/register': (context) => const RegisterScreen(),
           '/home': (context) => const HomeScreen(),
-          '/report': (context) => const ReportIncidentScreen(),
+          '/report': (context) => const incident.ReportIncidentScreen(),
           '/contacts': (context) => const EmergencyContactsScreen(),
-          '/alerts': (context) => const EmergencyAlertsScreen(),
+          '/alerts': (context) => const alerts.EmergencyAlertsScreen(),
           '/map': (context) => const MapScreen(),
           '/donations': (context) => const DonationsScreen(),
         },
