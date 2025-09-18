@@ -1,4 +1,4 @@
-**Mobile app link ** https://drive.google.com/file/d/18xpaMsMsk3ul9KJc_SmCzweYU6xVjWgo/view?usp=sharing
+#**Mobile app link ** https://drive.google.com/file/d/18xpaMsMsk3ul9KJc_SmCzweYU6xVjWgo/view?usp=sharing
 # **smart_civic_watch user mobile app**
 ---------------------------------------------------------
 **Prerequisites**
